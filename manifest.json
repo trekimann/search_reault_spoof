@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Search Replacer",
+  "version": "0.1",
+  "description": "An extension to spoof a search result given a specific keyword",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.google.com/*",
+        "*://www.google.co.uk/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": [
+    "activeTab"
+  ],
+  "web_accessible_resources": [
+    "keywords.json",
+    "custom-result.html"
+  ],
+  "options_page": "options.html"
+}
