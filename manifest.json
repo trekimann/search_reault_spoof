@@ -12,12 +12,16 @@
       "js": ["content.js"]
     }
   ],
+  "background": {
+    "scripts": [ "background.js" ]
+  },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
-    "keywords.json",
-    "custom-result.html"
+    "generate-google-results.js"
   ],
   "options_page": "options.html"
 }
