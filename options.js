@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             row.appendChild(elapsedTime);
         }
 
-        document.body.appendChild(metricsTable);
+        document.getElementById("metrics-table").appendChild(metricsTable);
 
     }
 
@@ -90,4 +90,18 @@ function saveOptions() {
             savedMessage.innerHTML = "";
         }, 750);
     });
+}
+
+function loadOptionsFromJSON() {
+    fetch("path/to/options.json")
+        .then(response => response.json())
+        .then(options => {
+            document.getElementById("keywords").value = options.keywords.join("\n");
+            document.getElementById("hyperlink").value = options.hyperlink;
+            document.getElementById("hyperlink_real").value = options.hyperlinkReal;
+            document.getElementById("title").value = options.title;
+            document.getElementById("description").value = options.description;
+            document.getElementById("icon").value = options.icon;
+            document.getElementById("childNodeIndex").value = options.childNodeIndex;
+        });
 }
