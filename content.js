@@ -1,10 +1,18 @@
+function log(log) {
+  console.log(log)
+}
+
 let checkForKeywords = function () {
   chrome.storage.sync.get(["keywords", "options"], function (data) {
     if (data.keywords) {
+      let search = window.location.search.toLowerCase();
       for (let i = 0; i < data.keywords.length; i++) {
-        let keyword = data.keywords[i];
-        if (document.body.innerText.indexOf(keyword) !== -1) {
+        let keyword = data.keywords[i].toLowerCase().split(" ").join("+");
+        if (search.indexOf("q=" + keyword) !== -1) {
+          log("Search term found")
           injectCustomResult(keyword, data.options);
+          recordMetric(keyword);
+          break;
         }
       }
     }
@@ -22,6 +30,36 @@ let injectCustomResult = function (keyword, options) {
     rso.insertBefore(customResult, rso.childNodes[childNodeIndex]);
   }
 };
+
+let recordMetric = function (keyword) {
+  const now = new Date();
+  let currentTime = now.toISOString();
+  let metric = {
+    keyword: keyword,
+    time: currentTime,
+    count: 1
+  };
+  chrome.storage.sync.get("metrics", function (data) {
+    let metrics = [];
+    if (data.metrics) {
+      metrics = data.metrics;
+      let index = metrics.findIndex(function (metric) {
+        return metric.keyword === keyword;
+      });
+      if (index !== -1) {
+        metrics[index].count++;
+      } else {
+        metrics.push(metric);
+      }
+    } else {
+      metrics.push(metric);
+    }
+    chrome.storage.sync.set({ metrics: metrics });
+    log("Metric added")
+  });
+};
+
+
 
 let generateGoogleResult = function (options) {
   let customResult = document.createElement("div");
