@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("childNodeIndex").value = data.options.childNodeIndex;
 
         let metrics = data.metrics;
+        metricsTable(metrics);
+    });
+
+    function metricsTable(metrics) {
         let metricsTable = document.createElement("table");
         metricsTable.style.width = "100%";
         metricsTable.setAttribute("border", "1");
@@ -19,17 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
         let headerRow = document.createElement("tr");
         metricsTable.appendChild(headerRow);
 
+        let idHeader = document.createElement("th");
+        idHeader.innerHTML = "ID";
+        headerRow.appendChild(idHeader);
+
         let searchTermHeader = document.createElement("th");
         searchTermHeader.innerHTML = "Search Term";
         headerRow.appendChild(searchTermHeader);
 
-        let searchCount = document.createElement("th");
-        searchCount.innerHTML = "Count";
-        headerRow.appendChild(searchCount);
-
-        let timeHeader = document.createElement("th");
-        timeHeader.innerHTML = "Time";
-        headerRow.appendChild(timeHeader);
+        let elapsedTimeHeader = document.createElement("th");
+        elapsedTimeHeader.innerHTML = "Elapsed Time";
+        headerRow.appendChild(elapsedTimeHeader);
 
         for (let i = 0; i < metrics.length; i++) {
             let metric = metrics[i];
@@ -37,22 +41,24 @@ document.addEventListener("DOMContentLoaded", function () {
             let row = document.createElement("tr");
             metricsTable.appendChild(row);
 
+            let id = document.createElement("td");
+            id.innerHTML = metric.id;
+            row.appendChild(id);
+
             let searchTerm = document.createElement("td");
-            searchTerm.innerHTML = metric.keyword;
+            searchTerm.innerHTML = metric.searchTerm;
             row.appendChild(searchTerm);
-            
-            let count = document.createElement("td");
-            count.innerHTML = metric.count;
-            row.appendChild(count);
-            
-            let timeSearched = document.createElement("td");
-            timeSearched.innerHTML = metric.time;
-            row.appendChild(timeSearched);
+
+            let elapsedTime = document.createElement("td");
+            elapsedTime.innerHTML = metric.elapsedTime;
+            row.appendChild(elapsedTime);
         }
 
-        document.getElementById("metrics-table").appendChild(metricsTable);
-    });
-});
+        document.body.appendChild(metricsTable);
+
+    }
+
+})
 
 function clearMetrics() {
     chrome.storage.sync.set({

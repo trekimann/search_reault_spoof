@@ -32,32 +32,39 @@ let injectCustomResult = function (keyword, options) {
 };
 
 let recordMetric = function (keyword) {
-  const now = new Date();
-  let currentTime = now.toISOString();
+  let currentTime = new Date();
+  let id = Date.now();
+  let startTime = performance.now();
   let metric = {
-    keyword: keyword,
-    time: currentTime,
-    count: 1
+    id: id,
+    searchTerm: keyword,
+    time: currentTime.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    }),
+    elapsedTime: 0,
   };
   chrome.storage.sync.get("metrics", function (data) {
     let metrics = [];
     if (data.metrics) {
       metrics = data.metrics;
-      let index = metrics.findIndex(function (metric) {
-        return metric.keyword === keyword;
-      });
-      if (index !== -1) {
-        metrics[index].count++;
-      } else {
-        metrics.push(metric);
-      }
-    } else {
-      metrics.push(metric);
     }
+    metrics.push(metric);
     chrome.storage.sync.set({ metrics: metrics });
-    log("Metric added")
+    log("Metric added");
+
+    document.getElementById(`custom-result-link`).addEventListener("click", function () {
+      let endTime = performance.now();
+      let elapsedTime = endTime - startTime;
+      metric.elapsedTime = elapsedTime;
+      chrome.storage.sync.set({ metrics: metrics });
+      log("Elapsed time updated: " + elapsedTime);
+    });
   });
 };
+
+
 
 
 
@@ -82,8 +89,10 @@ let generateGoogleResult = function (options) {
   innermostDiv.appendChild(linkDiv);
 
   let link = document.createElement("a");
+  link.id = "custom-result-link";
   link.href = options.hyperlinkReal;
   linkDiv.appendChild(link);
+  
 
   let title = document.createElement("h3");
   title.innerHTML = options.title;
