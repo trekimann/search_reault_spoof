@@ -21,7 +21,7 @@
     "tabs"
   ],
   "web_accessible_resources": [
-    "generate-google-results.js"
+    "search-options.json"
   ],
   "options_page": "options.html"
 }

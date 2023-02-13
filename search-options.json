@@ -1,0 +1,14 @@
+{
+    "keywords": [
+        "health care",
+        "health subsidy"
+    ],
+    "options": {
+        "hyperlink": "http://localhost:3000/phoenix/employer/v11/start-page",
+        "hyperlinkReal": "https://www.get-a-workplace-health-assessment-subisdy.gov.uk",
+        "title": "Get a workplace Health Subsidy - GOV.UK",
+        "description": "Get a code for an 80% discount on workplace health assessments.",
+        "icon": "",
+        "childNodeIndex": 1
+    }
+}

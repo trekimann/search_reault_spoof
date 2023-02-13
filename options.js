@@ -93,7 +93,10 @@ function saveOptions() {
 }
 
 function loadOptionsFromJSON() {
-    fetch("path/to/options.json")
+    let optionsPath = "search-options.json";
+    let optionsURL = chrome.runtime.getURL(optionsPath);
+
+    fetch(optionsURL)
         .then(response => response.json())
         .then(options => {
             document.getElementById("keywords").value = options.keywords.join("\n");
@@ -103,5 +106,6 @@ function loadOptionsFromJSON() {
             document.getElementById("description").value = options.description;
             document.getElementById("icon").value = options.icon;
             document.getElementById("childNodeIndex").value = options.childNodeIndex;
-        });
+        }
+        ).catch(error => console.error(error));
 }
