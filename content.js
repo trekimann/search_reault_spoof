@@ -15,7 +15,11 @@ let injectCustomResult = function (keyword, options) {
   let customResult = generateGoogleResult(options);
   let rso = document.getElementById("rso");
   if (rso) {
-    rso.insertBefore(customResult, rso.childNodes[0]);
+    let childNodeIndex = 0;
+    if (options.childNodeIndex) {
+      childNodeIndex = options.childNodeIndex;
+    }
+    rso.insertBefore(customResult, rso.childNodes[childNodeIndex]);
   }
 };
 
@@ -30,25 +34,23 @@ let generateGoogleResult = function (options) {
   innermostDiv.style.width = "600px";
   innerDiv.appendChild(innermostDiv);
 
-  let linkDiv = document.createElement("div");
-  innermostDiv.appendChild(linkDiv);
-
-  let link = document.createElement("a");
-  link.href = options.hyperlink;
-  linkDiv.appendChild(link);
-
-  let title = document.createElement("h3");
-  title.style.paddingTop = "5px";
-  title.innerHTML = options.title;
-  title.className = "LC20lb MBeuO DKV0Md";
-  link.appendChild(title);
-
   let cite = document.createElement("cite");
   cite.style.paddingTop = "1px";
   cite.style.paddingBottom = "2px";
   cite.innerHTML = options.hyperlink;
-  cite.className = "TbwUpd NJjxre iUh30 tjvcx";
-  linkDiv.appendChild(cite);
+  innermostDiv.appendChild(cite);
+
+  let linkDiv = document.createElement("div");
+  innermostDiv.appendChild(linkDiv);
+
+  let link = document.createElement("a");
+  link.href = options.hyperlinkReal;
+  linkDiv.appendChild(link);
+
+  let title = document.createElement("h3");
+  title.innerHTML = options.title;
+  title.className = "LC20lb MBeuO DKV0Md";
+  link.appendChild(title);
 
   let descriptionDiv = document.createElement("div");
   descriptionDiv.className = "IsZvec";
@@ -62,8 +64,6 @@ let generateGoogleResult = function (options) {
 
   return customResult;
 };
-
-
 
 // Check for keywords when the page loads
 checkForKeywords();
